@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        String input = "house no : 123@ cbe";
+        String reversed = reverseString(input);
+        System.out.println(reversed);
+    }
+
+    public static String reverseString(String input) {
+        Stack<Character> stack = new Stack<>();
+        List<Integer> punctuationsAndSpaces = new ArrayList<>();
+
+        // Step 1: Push non-punctuation and non-space characters onto the stack
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (!isPunctuationOrSpace(c)) {
+                stack.push(c);
+            } else {
+                punctuationsAndSpaces.add(i); // Step 2: Store the positions of punctuations and spaces
+            }
+        }
+
+        // Step 3: Pop characters from the stack and insert punctuations and spaces
+        StringBuilder reversed = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            if (punctuationsAndSpaces.contains(i)) {
+                reversed.append(input.charAt(i)); // Insert punctuations and spaces
+            } else {
+                reversed.append(stack.pop()); // Pop characters from the stack
+            }
+        }
+
+        return reversed.toString();
+    }
+
+    public static boolean isPunctuationOrSpace(char c) {
+        // Define characters that are considered punctuation or space
+        return c == ' ' || c == ',' || c == '.' || c == ';' || c == ':' || c == '!' || c == '?' || c == '@';
+    }
+}

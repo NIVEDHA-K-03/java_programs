@@ -1,0 +1,55 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Number of input: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        Map<String, Double> expressionValues = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter expression " + (i + 1) + ": ");
+            String expression = scanner.nextLine();
+            double result = evaluateExpression(expression);
+            expressionValues.put(expression, result);
+        }
+
+        // Sort the map by values
+        List<Map.Entry<String, Double>> sortedExpressions = new ArrayList<>(expressionValues.entrySet());
+        sortedExpressions.sort(Map.Entry.comparingByValue());
+
+        // Print the sorted expressions
+        for (Map.Entry<String, Double> entry : sortedExpressions) {
+            System.out.println(entry.getKey());
+        }
+
+        scanner.close();
+    }
+
+    public static double evaluateExpression(String expression) {
+        try {
+            // Replace '^' with '**' for exponentiation
+            expression = expression.replace("^", "**");
+            // Use the JavaScript engine to evaluate the expression
+            javax.script.ScriptEngineManager manager = new javax.script.ScriptEngineManager();
+            javax.script.ScriptEngine engine = manager.getEngineByName("js");
+            Object result = engine.eval(expression);
+            return Double.parseDouble(result.toString());
+        } catch (Exception e) {
+            // Handle any evaluation errors
+            return Double.NEGATIVE_INFINITY; // Return a special value for invalid expressions
+        }
+    }
+}
+
+
+/* 
+i/p:
+Number of input : 4
+2*3
+2^2^2
+35
+3*1 */

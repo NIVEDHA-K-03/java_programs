@@ -1,0 +1,52 @@
+/*  First Occurrences
+Given two strings, find the first occurrence of all characters of second string in the first string and
+print the characters between the least and the highest index
+I/P: ZOHOCORPORATION PORT
+O/P: OHOCORPORAT */
+
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        String input1 = "ZOHOCORPORATION";
+        String input2 = "PORT";
+        
+        String result = findFirstOccurrences(input1, input2);
+        System.out.println("O/P: " + result);
+    }
+    
+    public static String findFirstOccurrences(String s1, String s2) {
+        int[] firstOccurrence = new int[256]; // Assuming ASCII characters
+        
+        // Initialize the array with -1, indicating no occurrence of characters yet.
+        Arrays.fill(firstOccurrence, -1);
+        
+        // Populate the firstOccurrence array with the indices of the first occurrence of characters in s1.
+        for (int i = 0; i < s1.length(); i++) {
+            char ch = s1.charAt(i);
+            if (s2.indexOf(ch) != -1 && firstOccurrence[ch] == -1) {
+                firstOccurrence[ch] = i;
+            }
+        }
+        
+        int minIndex = Integer.MAX_VALUE;
+        int maxIndex = Integer.MIN_VALUE;
+        
+        // Find the minimum and maximum indices from firstOccurrence array.
+        for (char ch : s2.toCharArray()) {
+            int index = firstOccurrence[ch];
+            if (index != -1) {
+                minIndex = Math.min(minIndex, index);
+                maxIndex = Math.max(maxIndex, index);
+            }
+        }
+        
+        // If no characters from s2 were found in s1, return an empty string.
+        if (minIndex == Integer.MAX_VALUE) {
+            return "";
+        }
+        
+        // Return the substring between minIndex and maxIndex.
+        return s1.substring(minIndex, maxIndex + 1);
+    }
+}

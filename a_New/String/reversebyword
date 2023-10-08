@@ -1,0 +1,31 @@
+//using recursion
+
+public class Main {
+    public static void main(String[] args) {
+        String input = "one two three";
+        String reversed = reverseWords(input);
+        System.out.println(reversed);
+    }
+
+    public static String reverseWords(String input) {
+        // Base case: if the input is empty or contains only spaces
+        if (input == null || input.trim().isEmpty()) {
+            return "";
+        }
+
+        // Find the last space in the input
+        int lastSpaceIndex = input.lastIndexOf(' ');
+
+        // Base case: if there are no spaces left, return the input as is
+        if (lastSpaceIndex == -1) {
+            return input;
+        }
+
+        // Split the input into two parts: the last word and the rest of the string
+        String lastWord = input.substring(lastSpaceIndex + 1);
+        String remainingString = input.substring(0, lastSpaceIndex);
+
+        // Recursively reverse the remaining string and concatenate the last word
+        return lastWord + " " + reverseWords(remainingString);
+    }
+}

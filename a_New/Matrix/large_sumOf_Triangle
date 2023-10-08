@@ -1,0 +1,70 @@
+
+import java.util.Stack;
+
+public class Main {
+    public static void main(String[] args) {
+        
+        int rows = 3;
+        int cols = 3;
+
+        int[][] matrix = { { 1,2,3 }, { 4,5,6 }, { 7, 8,9 } };
+
+
+        int maxSum = findLargestDiagonalSum(matrix, rows, cols);
+        System.out.println(maxSum);
+
+       
+    }
+
+    public static int findLargestDiagonalSum(int[][] matrix, int rows, int cols) {
+        int maxSum = Integer.MIN_VALUE;
+
+        // Iterate through the diagonals starting from the top-right corner
+        for (int col = cols - 1; col >= 0; col--) {
+            Stack<Integer> stack = new Stack<>();
+            int row = 0;
+            int sum = 0;
+
+            // Calculate the sum of the upper triangle
+            while (col < cols && row < rows) {
+                sum += matrix[row][col];
+                stack.push(matrix[row][col]);
+                row++;
+                col++;
+            }
+
+            // Pop elements from the stack to calculate the sum of the lower triangle
+            while (!stack.isEmpty()) {
+                sum += stack.pop();
+            }
+
+            // Update the maximum sum
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        // Iterate through the diagonals starting from the top-left corner
+        for (int row = 1; row < rows; row++) {
+            Stack<Integer> stack = new Stack<>();
+            int col = 0;
+            int sum = 0;
+
+            // Calculate the sum of the upper triangle
+            while (row < rows && col < cols) {
+                sum += matrix[row][col];
+                stack.push(matrix[row][col]);
+                row++;
+                col++;
+            }
+
+            // Pop elements from the stack to calculate the sum of the lower triangle
+            while (!stack.isEmpty()) {
+                sum += stack.pop();
+            }
+
+            // Update the maximum sum
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return maxSum;
+    }
+}

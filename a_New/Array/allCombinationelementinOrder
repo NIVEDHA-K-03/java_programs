@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {8, 3, 4, 7, 9};
+        int targetSum = 7;
+
+        List<List<Integer>> combinations = findCombinationsWithSum(array, targetSum);
+        for (List<Integer> combination : combinations) {
+            System.out.println(combination);
+        }
+    }
+
+    public static List<List<Integer>> findCombinationsWithSum(int[] array, int targetSum) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> currentCombination = new ArrayList<>();
+        findCombinations(array, targetSum, 0, currentCombination, result);
+        return result;
+    }
+
+    private static void findCombinations(int[] array, int remainingSum, int currentIndex,
+                                         List<Integer> currentCombination, List<List<Integer>> result) {
+        if (remainingSum == 0) {
+            // Found a valid combination, add it to the result
+            result.add(new ArrayList<>(currentCombination));
+            return;
+        }
+
+        if (remainingSum < 0 || currentIndex == array.length) {
+            // Not a valid combination, backtrack
+            return;
+        }
+
+        // Include the current element in the combination
+        currentCombination.add(array[currentIndex]);
+        findCombinations(array, remainingSum - array[currentIndex], currentIndex + 1, currentCombination, result);
+
+        // Exclude the current element from the combination
+        currentCombination.remove(currentCombination.size() - 1);
+        findCombinations(array, remainingSum, currentIndex + 1, currentCombination, result);
+    }
+}

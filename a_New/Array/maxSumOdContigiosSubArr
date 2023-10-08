@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {-2, -3, 4, -1, -2, 1, 5, -3};
+        SubarrayResult result = findMaximumContiguousSum(array);
+        System.out.println("Maximum Sum: " + result.sum);
+        System.out.println("Elements: " + Arrays.toString(result.elements.toArray()));
+    }
+
+    public static SubarrayResult findMaximumContiguousSum(int[] array) {
+        int maxSum = Integer.MIN_VALUE;
+        int currentSum = 0;
+        int startIndex = 0;
+        int endIndex = 0;
+        int tempStartIndex = 0;
+
+        List<Integer> currentElements = new ArrayList<>();
+        List<Integer> maxElements = new ArrayList<>();
+
+        for (int i = 0; i < array.length; i++) {
+            currentSum += array[i];
+            currentElements.add(array[i]);
+
+            if (currentSum > maxSum) {
+                maxSum = currentSum;
+                startIndex = tempStartIndex;
+                endIndex = i;
+                maxElements.clear();
+                maxElements.addAll(currentElements);
+            }
+
+            if (currentSum < 0) {
+                currentSum = 0;
+                currentElements.clear();
+                tempStartIndex = i + 1;
+            }
+        }
+
+        return new SubarrayResult(maxSum, maxElements);
+    }
+
+    static class SubarrayResult {
+        int sum;
+        List<Integer> elements;
+
+        public SubarrayResult(int sum, List<Integer> elements) {
+            this.sum = sum;
+            this.elements = elements;
+        }
+    }
+}
